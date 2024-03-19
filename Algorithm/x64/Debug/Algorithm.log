@@ -1,2 +1,5 @@
-﻿  Algorithm.cpp
-  Algorithm.vcxproj -> D:\rocherLeo\Algorithm\x64\Debug\Algorithm.exe
+﻿  Dijkstra.cpp
+  AStar.cpp
+D:\rocherLeo\AI_Algorithm\Algorithm\AStar.cpp(12,29): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+  Algorithm.vcxproj -> D:\rocherLeo\AI_Algorithm\x64\Debug\Algorithm.exe
