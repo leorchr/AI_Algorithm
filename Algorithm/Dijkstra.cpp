@@ -8,7 +8,7 @@ using namespace std;
 struct Vertex {
 	std::string name;
 	int dist;		// distance from origin
-	Vertex* prev;	//what is the previos vertex
+	Vertex* prev;	//what is the previous vertex
 	bool open;		// if the vertex is still open
 };
 
