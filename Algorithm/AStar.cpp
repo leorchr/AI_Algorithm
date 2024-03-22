@@ -5,36 +5,39 @@
 #include <algorithm>
 
 using namespace std;
+#define inf std::numeric_limits<float>::max()
 
 struct Vector2 {
 	int x, y;
 	Vector2(int pX, int pY) : x(pX), y(pY) {}
-	float Norme() { return sqrt(pow(x, 2) + pow(y, 2)); }
+	float Norm() { return pow(x, 2) + pow(y, 2); }
 };
 
 struct Node {
 	float g, h, f;
 	Vector2 position;
 	Node* parent;
-	Node(float pG, float pH, float pF, Vector2 pPosition, Node* pParent) :
-		g(pG),
-		h(pH),
-		f(pF),
+	float cost;
+	Node(Vector2 pPosition, Node* pParent, float pCost = 1) :
+		g(0),
+		h(0),
+		f(inf),
 		position(pPosition),
+		cost(pCost),
 		parent(nullptr) {}
 };
 
-Node startNode = Node(0, 0, 0, Vector2(0, 0), nullptr);
-Node endNode = Node(0, 0, 0, Vector2(4, 4), nullptr);
-Node* currentNode = new Node(0, 0, 0, Vector2(0, 0), nullptr);
+Node startNode = Node(Vector2(4, 1), nullptr);
+Node endNode = Node(Vector2(4, 3), nullptr);
+Node* currentNode = new Node(Vector2(0, 0), nullptr);
 
-std::vector<std::vector<Node*>> map (5, std::vector<Node*>(5, new Node(0,0,0,Vector2(0,0),nullptr)));
-std::vector<std::vector<int>> intMap = {
-{0,1,1,1,0},
-{0,1,1,1,0},
-{0,0,0,1,0},
-{1,1,0,1,0},
-{1,1,0,0,0}};
+std::vector<std::vector<Node*>> map (5, std::vector<Node*>(5, new Node(Vector2(0,0),nullptr)));
+std::vector<std::vector<float>> floatMap = {
+{1,1,1,1,1},
+{1,2,2,1,1},
+{1,1,inf,1,1.5},
+{1,1,inf,1,1.5},
+{1,1,inf,1,1}};
 
 void InitMap();
 void Pathfinding(std::vector<std::vector<Node*>> map, Node* startNode);
@@ -57,8 +60,7 @@ void Pathfinding(std::vector<std::vector<Node*>> map, Node* startNode) {
 
 	while (openNodes.size() > 0) {
 
-		int nodeIndex = GetMinimumF(openNodes); 
-
+		int nodeIndex = GetMinimumF(openNodes);
 		
 		currentNode = openNodes[nodeIndex];
 
@@ -77,10 +79,16 @@ void Pathfinding(std::vector<std::vector<Node*>> map, Node* startNode) {
 			if (std::find(closedNodes.begin(), closedNodes.end(), child) != closedNodes.end()) {
 				continue;
 			}
-			child->g = currentNode->g + GetDistance(*currentNode, *child);
-			child->h = GetDistance(*child, endNode);
-			child->f = child->g + child->h;
-			child->parent = currentNode;
+			float g = currentNode->g + GetDistance(*currentNode, *child);
+			float h = child->h;
+			float f = g + h;
+			f *= child->cost;
+			if (f < child->f) {
+				child->g = g;
+				child->f = f;
+				child->parent = currentNode;
+			}
+			//
 
 			bool childPos = false; // check if child position is in open list nodes
 			bool gValue = false; // check if child.g is higher than the open list node's g
@@ -109,12 +117,15 @@ int GetMinimumF(std::vector<Node*> openNodes) {
 }
 
 void InitMap() {
-	for (int i = 0; i < intMap.size(); i++)
+	for (int i = 0; i < floatMap.size(); i++)
 	{
-		for (int j = 0; j < intMap[i].size(); j++)
+		for (int j = 0; j < floatMap[i].size(); j++)
 		{
-			map[i][j] = new Node(0, 0, 0, Vector2(i, j), nullptr);
+			map[i][j] = new Node(Vector2(i, j), nullptr, floatMap[i][j]);
+			map[i][j]->h = GetDistance(*map[i][j], endNode);
+			cout << ((map[i][j]->cost == inf) ? "|" : (map[i][j]->cost == 1) ? "." : "*");
 		}
+		cout << endl;
 	}
 }
 
@@ -125,10 +136,10 @@ std::vector<Node*> GetChildrens(Node& node) {
 
 	for (int i = node.position.x - 1; i < node.position.x + 2; i++)
 	{
-		if (i < 0 || i > map.size()) continue;
+		if (i < 0 || i >= map.size()) continue;
 		for (int j = node.position.y - 1; j < node.position.y + 2; j++)
 		{
-			if (j < 0 || j > map[i].size()) continue;
+			if (j < 0 || j >= map[i].size()) continue;
 			if (node.position.x == map[i][j]->position.x && node.position.y == map[i][j]->position.y) continue;
 			childrens.push_back(map[i][j]);
 		}
@@ -137,7 +148,7 @@ std::vector<Node*> GetChildrens(Node& node) {
 }
 
 float GetDistance(Node origin, Node destination) {
-	return(Vector2(destination.position.x - origin.position.x, destination.position.y - origin.position.y).Norme());
+	return(Vector2(destination.position.x - origin.position.x, destination.position.y - origin.position.y).Norm());
 }
 
 void ShowPath(Node* end) {
