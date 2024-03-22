@@ -107,11 +107,11 @@ float AStar::GetDistance(Node origin, Node destination)
 
 void AStar::ShowPath(Node* end)
 {
-	Node* current = end;
+	/*Node* current = end;
 	while (current->parent != nullptr) {
 		cout << "X : " << current->position.x << "\tY : " << current->position.y << endl;
 		current = current->parent;
-	}
+	}*/
 }
 
 Node AStar::getEndNode()
@@ -126,6 +126,7 @@ void AStar::setEndNode(Node *pEndNode)
 	{
 		for (int j = 0; j < worldMap[i].size(); j++)
 		{
+			map[i][j]->h = GetDistance(*map[i][j], endNode);
 		}
 	}
 }
