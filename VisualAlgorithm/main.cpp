@@ -23,7 +23,7 @@ std::vector<std::vector<float>> worldMap = {
 {1,1,inf,1,1.5,1,1,2,1,1},
 {1,1,inf,1,1,1,1,1,1,1}};
 
-Vector2 startPos = Vector2{ 9, 0 };
+Vector2 startPos = Vector2{ 0, 0 };
 Node startNode = Node(startPos);
 AStar star = AStar(worldMap);
 
@@ -46,6 +46,7 @@ int main() {
 void Update() {
     Vector2 goal = { 0,0 };
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        star = AStar(worldMap);
         goal = GetMousePosition();
         float positionX = int(goal.y/tileSize);
         float positionY = int(goal.x/tileSize);
@@ -53,8 +54,7 @@ void Update() {
         cout << positionX << "  " << positionY << endl;
         star.setEndNode(&endNode);
         star.Pathfinding(&startNode, &endNode);
-        
-        //startNode = Node(Vector2{ endNode.position.x,endNode.position.y });
+        startNode = Node(Vector2{ endNode.position.x,endNode.position.y });
     }
 }
 
