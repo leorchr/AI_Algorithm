@@ -1,3 +1,3 @@
 ﻿  AStar.cpp
-D:\rocherLeo\AI_Algorithm\Algorithm\AStar.cpp(13,34): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
-  Algorithm.vcxproj -> D:\rocherLeo\AI_Algorithm\x64\Debug\Algorithm.exe
+D:\GAME3\rocherLeo\AI_Algorithm\Algorithm\AStar.cpp(13,34): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+  Algorithm.vcxproj -> D:\GAME3\rocherLeo\AI_Algorithm\x64\Debug\Algorithm.exe

@@ -69,7 +69,7 @@ void Pathfinding(std::vector<std::vector<Node*>> map, Node* startNode) {
 
 		if (currentNode->position.x == endNode.position.x && currentNode->position.y == endNode.position.y) {
 			ShowPath(currentNode);
-			cout << "ohhhhhhhhhhhhhhhhh" << endl;
+			cout << "Path found !" << endl;
 			return;
 		}
 		std::vector<Node*> childrenNodes = GetChildrens(*currentNode);
