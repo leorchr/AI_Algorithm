@@ -32,7 +32,7 @@ const int screenHeight = 800;
 float tileSize = screenHeight / worldMap.size();
 
 int main() {
-    InitWindow(screenWidth, screenHeight, "A Starrrrrrrrrrrrr");
+    InitWindow(screenWidth, screenHeight, "A Star");
     SetTargetFPS(60);
     while (!WindowShouldClose()) {
         Update();
@@ -52,6 +52,7 @@ void Update() {
         float positionY = int(goal.x/tileSize);
         Node endNode = Node(Vector2{ positionX, positionY });
         cout << positionX << "  " << positionY << endl;
+        if (worldMap[positionX][positionY] == inf) return;
         star.setEndNode(&endNode);
         star.Pathfinding(&startNode, &endNode);
         startNode = Node(Vector2{ endNode.position.x,endNode.position.y });
@@ -71,11 +72,11 @@ void Draw() {
 void DrawPath() {
     Node pathNode = star.getEndNode();
     while (pathNode.parent != nullptr) {
-        DrawCircle(tileSize * pathNode.position.y + tileSize / 2, tileSize * pathNode.position.x + tileSize / 2, tileSize/4,{ 240,124,255,255 });
+        DrawCircle(tileSize * pathNode.position.y + tileSize / 2, tileSize * pathNode.position.x + tileSize / 2, tileSize/4,{ 200,140,255,255 });
         pathNode = *pathNode.parent; {
         }
     }
-    DrawCircle(tileSize * pathNode.position.y + tileSize / 2, tileSize * pathNode.position.x + tileSize / 2, tileSize / 2, { 240, 124, 255, 255 });
+    DrawCircle(tileSize * pathNode.position.y + tileSize / 2, tileSize * pathNode.position.x + tileSize / 2, tileSize / 2, { 200, 140, 255, 255 });
 }
 
 void DrawMap() {
@@ -84,10 +85,10 @@ void DrawMap() {
         for (int j = 0; j < worldMap[i].size(); j++)
         {
             Color color;
-            if (worldMap[i][j] == inf) color = { 0 , 30 , 240 , 240 };
-            if (worldMap[i][j] == 1) color = { 164 , 240 , 95 , 240 };
-            if (worldMap[i][j] == 1.5f) color = { 140 , 70 , 60 , 150 };
-            if (worldMap[i][j] == 2) color = { 240 , 140 , 10 , 240 };
+            if (worldMap[i][j] == inf) color = { 120 , 200 , 255 , 255 };
+            if (worldMap[i][j] == 1) color = { 164 , 240 , 95 , 255 };
+            if (worldMap[i][j] == 1.5f) color = { 170 , 100 , 0 , 255 };
+            if (worldMap[i][j] == 2) color = { 240 , 140 , 10 , 255 };
             DrawRectangle(tileSize * j, tileSize * i, tileSize, tileSize, color);
         }
     }
